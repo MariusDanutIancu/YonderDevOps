@@ -9,5 +9,4 @@ else
 fi
 
 date +"%d %b %Y %H:%M:%S" >> /var/log/systemusage/disk.log
-df -h | awk '{if(NR>1) print $1 " " $5 " " $6}' | column -t >> /var/log/systemusage/disk.log
-echo >> /var/log/systemusage/disk.log
+df -h | awk '{if(NR>1) print $1 " " $5 " " $6 "\n"}' | column -t >> /var/log/systemusage/disk.log
