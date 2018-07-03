@@ -1,3 +1,3 @@
 yum -y update
-yum -y install epel-release
-yum -y install nginx
+yum -y install git
+yum -y install golang

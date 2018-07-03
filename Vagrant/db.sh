@@ -1,3 +1,5 @@
 yum -y update
-yum -y install epel-release
-yum -y install nginx
+yum -y install postgresql-server postgresql-contrib
+postgresql-setup initdb
+systemctl start postgresql
+systemctl enable postgresql
