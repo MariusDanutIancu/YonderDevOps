@@ -1,2 +1,6 @@
+# Vagrant
+Vagrant/.vagrant/*
+
 # others
-/Vagrant/copy.sh
+Vagrant/copy.sh
+
