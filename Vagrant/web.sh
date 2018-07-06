@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SELINUX
+setenforce 0
+
+# install
 yum -y update
 yum -y install git
 yum -y install golang
@@ -9,10 +13,11 @@ yum install -y dos2unix
 dos2unix build.sh
 bash build.sh
 
+# config
 cat <<EOF > conf.json
 {
     "DBName": "2018",
-        "User": "postgres",
+    	"User": "postgres",
         "Password": "password1994",
         "Host": "10.143.20.4",
         "Port": "5432"
@@ -44,7 +49,6 @@ if $programname == 'go-intern' then ~
 EOF
 
 mkdir /var/log/go-intern
-setenforce 0
 
 systemctl daemon-reload
 systemctl restart rsyslog.service
