@@ -116,7 +116,7 @@ server {
 }
 EOF
 
-ln -s /etc/nginx/sites-available/yonder_devops.com.conf /etc/nginx/sites-enabled/yourdomain.com.conf
+ln -s /etc/nginx/sites-available/yonder_devops.com.conf /etc/nginx/sites-enabled/yonder_devops.com.conf
 
 # restart nginx
 systemctl restart nginx
