@@ -31,7 +31,7 @@ echo "Data created"
 
 # set variables
 nr_days=\$(cal \$1 \$2 | egrep -v [a-z] |wc -w)
-printf -v month "%02d" $1
+printf -v month "%02d" \$1
 year=\$2
 id=\$3
 echo "Variables set"
