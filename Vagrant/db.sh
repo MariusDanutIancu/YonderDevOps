@@ -3,18 +3,19 @@
 # SELINUX
 setenforce 0
 
+# change path
+cd /
+
 # install
 yum -y update
 yum -y install postgresql-server postgresql-contrib
+yum -y install vim
 postgresql-setup initdb
 systemctl start postgresql
 systemctl enable postgresql
 
 # configure
-cd /
 echo "password1994" | passwd postgres --stdin
-# sudo -u postgres -i
-# su - postgres
 sudo -u postgres psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'password1994';"
 
 touch database_script.sh
@@ -57,5 +58,5 @@ sed -i '84s#.*#host    all             all              ::/0                    
 # restart
 systemctl restart postgresql
 
-# exit
-exit
+# change path
+cd /

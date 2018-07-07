@@ -7,20 +7,24 @@ setenforce 0
 yum -y update
 yum -y install git
 yum -y install golang
+yum -y install vim
+
 git clone https://github.com/aso930/go-interns.git
-cd /home/vagrant/go-interns/
+
 yum install -y dos2unix
+cd go-interns
 dos2unix build.sh
 bash build.sh
+cd ..
 
 # config
-cat <<EOF > conf.json
+cat <<EOF > /home/vagrant/go-interns/conf.json
 {
     "DBName": "2018",
-    	"User": "postgres",
-        "Password": "password1994",
-        "Host": "10.143.20.4",
-        "Port": "5432"
+    "User": "postgres",
+    "Password": "password1994",
+    "Host": "10.143.20.4",
+    "Port": "5432"
 }
 EOF
 
@@ -42,14 +46,17 @@ SyslogIdentifier=go-intern
 WantedBy=multi-user.target
 EOF
 
+mkdir /var/log/go-intern
 touch /etc/rsyslog.d/go-intern.conf
 cat <<EOF > /etc/rsyslog.d/go-intern.conf
-if $programname == 'go-intern' then /var/log/go-intern/go-intern.log
-if $programname == 'go-intern' then ~
+if \$programname == 'go-intern' then /var/log/go-intern/go-intern.log
+if \$programname == 'go-intern' then ~
 EOF
 
-mkdir /var/log/go-intern
-
+# restart
 systemctl daemon-reload
 systemctl restart rsyslog.service
-systemctl start go-intern.service
+systemctl restart go-intern.service
+
+# change path
+cd /

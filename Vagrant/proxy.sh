@@ -7,6 +7,7 @@ setenforce 0
 yum -y update
 yum -y install epel-release
 yum -y install nginx
+yum -y install vim
 
 systemctl start nginx
 systemctl enable nginx
@@ -51,9 +52,9 @@ events {
 }
 
 http {
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
+    log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+                      '\$status \$body_bytes_sent "\$http_referer" '
+                      '\$http_user_agent" "\$http_x_forwarded_for"';
 
     access_log  /var/log/nginx/access.log  main;
 
@@ -105,7 +106,7 @@ server {
 	    try_files \$uri \$uri/ =404;
 	}
 
-	location /go_intern {
+	location /go-intern {
 		proxy_pass http://10.143.20.3:18080;
 	}
 
@@ -120,3 +121,6 @@ ln -s /etc/nginx/sites-available/yonder_devops.com.conf /etc/nginx/sites-enabled
 
 # restart nginx
 systemctl restart nginx
+
+# change path
+cd /
