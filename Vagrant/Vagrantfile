@@ -55,6 +55,9 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     	end
 		
+		proxy_config.vm.provision "file", source: "nginx/nginx.conf", destination: "/home/vagrant/files/nginx.conf"
+		proxy_config.vm.provision "file", source: "nginx/yonder_devops.com.conf", destination: "/home/vagrant/files/yonder_devops.com.conf"
+
 		proxy_config.vm.provision "shell", path: "provision_scripts/proxy.sh"
 
   	end
@@ -96,6 +99,8 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     	end
 		
+		db_config.vm.provision "file", source: "database/database_script.sh", destination: "/home/vagrant/files/database_script.sh"
+
 		db_config.vm.provision "shell", path: "provision_scripts/db.sh"
   
   	end
