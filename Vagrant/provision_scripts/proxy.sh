@@ -40,7 +40,7 @@ mkdir /etc/nginx/sites-available
 mkdir /etc/nginx/sites-enabled
 
 cp /home/vagrant/files/nginx.conf /etc/nginx/nginx.conf
-cp /home/vagrant/files/database_script.sh /etc/nginx/sites-available/yonder_devops.com.conf
+cp /home/vagrant/files/yonder_devops.com.conf /etc/nginx/sites-available/yonder_devops.com.conf
 
 ln -s /etc/nginx/sites-available/yonder_devops.com.conf /etc/nginx/sites-enabled/yonder_devops.com.conf
 
