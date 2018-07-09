@@ -23,64 +23,33 @@ bash build.sh
 
 
 %install
+
 mkdir -p %{buildroot}/opt/%{name}/
 mkdir -p %{buildroot}/opt/%{name}/templates/
 
 install -m 0755 main %{buildroot}/opt/%{name}
 install -m 0755 templates/* %{buildroot}/opt/%{name}/templates/
 install -m 0755 conf.json %{buildroot}/opt/%{name}
-
-# config
-cat <<EOF > /home/vagrant/go-interns/conf.json
-{
-    "DBName": "2018",
-    "User": "postgres",
-    "Password": "password1994",
-    "Host": "10.143.20.4",
-    "Port": "5432"
-}
-EOF
-
-touch /etc/systemd/system/go-intern.service
-cat <<EOF > /etc/systemd/system/go-intern.service
-[Unit]
-Description=go-intern-service
-
-[Service]
-ExecStart=/opt/go-interns/main
-WorkingDirectory=/opt/go-interns
-Type=simple
-KillMode=process
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=go-intern
-User=gouser
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-mkdir -p /var/log/go-intern
-touch /etc/rsyslog.d/go-intern.conf
-cat <<EOF > /etc/rsyslog.d/go-intern.conf
-if \$programname == 'go-intern' then /var/log/go-intern/go-intern.log
-if \$programname == 'go-intern' then ~
-EOF
+install -m 0755 go-intern.service %{buildroot}/opt/%{name}
+install -m 0755 go-intern.conf %{buildroot}/opt/%{name}
 
 %post
 useradd gouser
 
+cp /opt/%{name}/go-intern.service /etc/systemd/system/go-intern.service
+cp /opt/%{name}/go-intern.conf /etc/rsyslog.d/go-intern.conf
+
 systemctl daemon-reload
 systemctl restart rsyslog.service
 systemctl enable go-intern.service
-systemctl start go-intern.service
-
+systemctl restart go-intern.service
 
 %files
+/opt/%{name}/main
 /opt/%{name}/conf.json
 /opt/%{name}/templates/*
-/opt/%{name}/main
-
+/opt/%{name}/go-intern.service
+/opt/%{name}/go-intern.conf
 
 %changelog
 * Mon Jul 09 2018 Marius Iancu <marius.danut94@gmail.com> - 1.0

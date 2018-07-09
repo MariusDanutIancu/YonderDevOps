@@ -1,0 +1,15 @@
+[Unit]
+Description=go-intern-service
+
+[Service]
+ExecStart=/opt/go-interns/main
+WorkingDirectory=/opt/go-interns
+Type=simple
+KillMode=process
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=go-intern
+User=gouser
+
+[Install]
+WantedBy=multi-user.target
