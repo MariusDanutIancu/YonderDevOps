@@ -1,0 +1,20 @@
+baseURL = "http://yonder_devops_docs.org/"
+languageCode = "en-us"
+title = "Yonder Devops"
+theme = "kraiklyn"
+
+[params]
+sidebarColor = "red"
+externalTitle = "External sites"
+customCss = []
+
+[[menu.shortcuts]]
+name = "Yonder Devops"
+url = "http://10.143.20.2"
+weight = 10
+
+[[menu.shortcuts]]
+name = "Yonder Devops Docs"
+url = "http://10.143.20.3:1313"
+weight = 10
+
