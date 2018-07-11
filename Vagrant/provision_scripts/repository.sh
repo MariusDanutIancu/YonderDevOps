@@ -6,19 +6,13 @@ setenforce 0
 # install
 yum -y update
 yum -y install vim
-yum install createrepo
-yum install httpd
+yum -y install createrepo
+yum -y install httpd
 
-mkdir -p /repos/centos/7/Packages
 mkdir -p /var/www/html/localrepo
 
-cat <<EOF > /etc/yum.repos.d/localrepo.repo
-[localrepo]
-name=yonder_devops Repository
-baseurl=file:///var/www/html/localrepo
-gpgcheck=0
-enabled=1
-EOF
+cp -ar /home/vagrant/files/rpm/* /var/www/html/localrepo
+cp  /home/vagrant/files/localrepo.repo /etc/yum.repos.d/localrepo.repo
 
 createrepo -v /var/www/html/localrepo
 createrepo --update /var/www/html/localrepo

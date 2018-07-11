@@ -1,0 +1,5 @@
+[localrepo]
+name=yonder_devops Repository
+baseurl=file:///var/www/html/localrepo
+gpgcheck=0
+enabled=1
