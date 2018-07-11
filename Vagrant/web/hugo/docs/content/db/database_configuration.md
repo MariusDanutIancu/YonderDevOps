@@ -2,11 +2,12 @@
 title: "Database config"
 date: 2018-01-28T21:48:10+01:00
 anchor: "database_config"
-weight: 20
+weight: 51
 ---
 
 1) Install:
-```console
+
+```bash
 yum install postgresql-server postgresql-contrib
 postgresql-setup initdb
 systemctl start postgresql
@@ -14,43 +15,51 @@ systemctl enable postgresql
 ```
 
 2) Configure postgresql
-```console
+
+```bash
 passwd postgres
 su - postgres
 psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'password1994';"
 ```
 
 3) Access postgresql
-```console
+
+```bash
 psql postgres
 ```
 
 4) Create database
+
 ```sql
 CREATE DATABASE "2018";
 ```
 
 5) List databases
-```console
+
+```bash
 \l
 ```
 
 6) Connect to database
-```console
+
+```bash
 \c 2018
 ```
 
 7) Create a table
+
 ```sql
 CREATE TABLE calendar (id int, weekday varchar, zi varchar, luna varchar, an varchar);
 ```
 
 8) List tables
-```console
+
+```psql
 \dt
 ```
 
 9) Insert data
+
 ```sql
 INSERT INTO calendar VALUES (1, '-', '01', '01', '2018');
 INSERT INTO calendar VALUES (2, '-', '02', '01', '2018');
@@ -59,27 +68,32 @@ INSERT INTO calendar VALUES (4, '-', '25', '01', '2018');
 ```
 
 10) Select data
+
 ```sql
 SELECT * FROM calendar;
 ```
 
 11) Update data
+
 ```sql
 UPDATE calendar ca SET weekday = to_char(to_date(concat(c.zi,' ', c.luna, ' ', c.an), 'DD-MM-YYYY'), 'Day') from calendar c where ca.id = c.id;
 ```
 
 12) Select data
+
 ```sql
 SELECT * FROM calendar;
 ```
 
 13) Disconnect from database
-```console
+
+```psql
 \q
 ```
 
 14) Edit bash script
-```console
+
+```bash
 vim database_script.sh
 ```
 ```bash
@@ -112,29 +126,33 @@ psql -U postgres -d 2018 -c "UPDATE calendar ca SET weekday = to_char(to_date(co
 echo "Data updated"
 ```
 15) Run script
-```
+
+```bash
 $1=month
 $2=year
-#3=id
+$3=id
 ```
 
-```console
+```bash
 bash database_script.sh 2 2000 1
 ```
 
 16) Access database
-```console	
+
+```psql	
 psql postgres
 \c 2018
 ```
 
 17) Select data
+
 ```sql
 SELECT * FROM calendar;
 ```
 
 18) Exit
-```console
+
+```bash
 \q
 logout
 ```

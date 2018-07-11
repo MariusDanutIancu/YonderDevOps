@@ -2,21 +2,24 @@
 title: "Nginx new location config"
 date: 2018-01-28T21:48:10+01:00
 anchor: "nginx_new_location_config"
-weight: 20
+weight: 35
 ---
 
 1) Create a new directory
-```console
+
+```bash
 mkdir -p /var/www/yonder_devops.com/public_html/stagiu
 ```
 
 2) Copy index file
-```console
+
+```bash
 cp /var/www/yonder_devops.com/public_html/index.html /var/www/yonder_devops.com/public_html/stagiu
 ```
 
 3) Edit conf file and add a new location
-```console
+
+```bash
 vim /etc/nginx/sites-enabled/yonder_devops.com.conf
 ```
 
@@ -35,11 +38,11 @@ vim /etc/nginx/sites-enabled/yonder_devops.com.conf
 
 	        ssl_certificate      /etc/nginx/ssl/theos.in/self-ssl.crt;
 	        ssl_certificate_key  /etc/nginx/ssl/theos.in/self-ssl.key;
-                ssl_session_cache shared:SSL:20m;
-                ssl_session_timeout 180m;
-                ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-                ssl_prefer_server_ciphers on;
-                ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DHE+AES128:!ADH:!AECDH:!MD5;
+            ssl_session_cache shared:SSL:20m;
+            ssl_session_timeout 180m;
+            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            ssl_prefer_server_ciphers on;
+            ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DHE+AES128:!ADH:!AECDH:!MD5;
 
 	        location / {
 	                root /var/www/yonder_devops.com/public_html;
@@ -61,7 +64,8 @@ vim /etc/nginx/sites-enabled/yonder_devops.com.conf
 ```
 
 9) Restart nginx
-```console
+
+```bash
 systemctl restart nginx
 ```
 

@@ -1,32 +1,37 @@
 ---
-title: "Go-intern config"
+title: "Go intern rpm package"
 date: 2018-01-28T21:48:10+01:00
-anchor: "go_intern_config"
-weight: 41
+anchor: "go_intern_rpm_package"
+weight: 71
 ---
 
 1) Move to directory
-```console
+
+```bash
 cd /home/vagrant
 ```
 
 2) Install packages
-```console
+
+```bash
 yum -y install gcc rpm-build rpm-devel rpmlint make python bash coreutils diffutils patch rpmdevtools dos2unix
 ```
 
 3) Clone go-interns repository
-```console
+
+```bash
 git clone https://github.com/aso930/go-interns.git
 ```
 
 4) Move to go-interns directory
-```console
+
+```bash
 cd /home/vagrant/go-interns
 ```
 
 5) Create go-intern.service file
-```service
+
+```bash
 [Unit]
 Description=go-intern-service
 
@@ -45,24 +50,27 @@ WantedBy=multi-user.target
 ```
 
 6) Create go-intern.conf file
+
 ```php
 if $programname == 'go-intern' then /var/log/go-intern/go-intern.log
 if $programname == 'go-intern' then ~
 ```
 
 7) Change script to unix style
-```console
+
+```bash
 dos2unix build.sh
 ```
 
 8) Create temporary rpm directory
-```console
+
+```bash
 mkdir /tmp/go-interns-1.0
 ```
 
 9) Copy needed files to the temporary directory
 
-```console
+```bash
 cp build.sh /tmp/go-interns-1.0
 cp conf.json /tmp/go-interns-1.0
 cp main.go /tmp/go-interns-1.0
@@ -72,27 +80,32 @@ cp -r templates /tmp/go-interns-1.0
 ```
 
 10) Create rpm tree
-```console
+
+```bash
 rpmdev-setuptree
 ```
 
 11) Change directory
-```console
+
+```bash
 cd /tmp/
 ```
 
 12) Create an arhive
-```console
+
+```bash
 tar -cvzf go-interns-1.0.tar.gz go-interns-1.0
 ```
 
 13) Move arhive
-```console
+
+```bash
 mv /tmp/go-interns-1.0.tar.gz /root/rpmbuild/SOURCES
 ```
 
 14) Create the go-intern.spec file
-```console
+
+```bash
 touch /root/rpmbuild/SPECS/go-intern.spec
 ```
 
@@ -156,32 +169,38 @@ systemctl restart go-intern.service
 ```
 
 15) Check rpm
-```console
+
+```bash
 rpmlint /root/rpmbuild/SPECS/go-intern.spec
 ```
 
 16) Build rpm
-```console
+
+```bash
 rpmbuild -bb /root/rpmbuild/SPECS/go-intern.spec
 ```
 
 17) Move rpm to home directory
-```console
+
+```bash
 mv /root/rpmbuild/RPMS/x86_64/go-interns-1.0-1.el7.x86_64.rpm /home/vagrant/
 ```
 
 18) Install go-intern
-```console
+
+```bash
 rpm -ivh /home/vagrant/go-interns-1.0-1.el7.x86_64.rpm
 ```
 
 19) Change directory
-```console
+
+```bash
 cd /opt/go-interns
 ```
 
 20) Edit conf.json file
-```json
+
+```bash
 {
     "DBName": "2018",
     "User": "postgres",
@@ -193,9 +212,12 @@ cd /opt/go-interns
 
 21) Restart services
 
-```console
+```bash
 systemctl daemon-reload
 systemctl restart rsyslog.service
 systemctl restart go-intern.service
 ```
+
+
+
 

@@ -2,19 +2,21 @@
 title: "Ngnix http to https config"
 date: 2018-01-28T21:48:10+01:00
 anchor: "nginx_http_to_https_config"
-weight: 20
+weight: 34
 ---
 
 1) To redirect http to https edit
-```console
+
+```bash
 vim /etc/nginx/sites-enabled/yonder_devops.com.conf
 ```
+
 ```nginx
 server {
-                listen 10.143.20.2:80;
-                server_name yonder_devops.com www.yonder_devops.com;
+               listen 10.143.20.2:80;
+               server_name yonder_devops.com www.yonder_devops.com;
 
-                # redirect
+               # redirect
                return 301 https://$server_name$request_uri;
 }
 
@@ -24,11 +26,11 @@ server {
 
 	        ssl_certificate      /etc/nginx/ssl/theos.in/self-ssl.crt;
 	        ssl_certificate_key  /etc/nginx/ssl/theos.in/self-ssl.key;
-                ssl_session_cache shared:SSL:20m;
-                ssl_session_timeout 180m;
-                ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-                ssl_prefer_server_ciphers on;
-                ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DHE+AES128:!ADH:!AECDH:!MD5;
+            ssl_session_cache shared:SSL:20m;
+            ssl_session_timeout 180m;
+            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            ssl_prefer_server_ciphers on;
+            ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DHE+AES128:!ADH:!AECDH:!MD5;
 
 
 	        location / {
@@ -45,12 +47,14 @@ server {
 ```
 
 2) Restart nginx
-```console
+
+```bash
 systemctl restart nginx
 ```
 
 3) Edit host /etc/hosts file and add
-```
+
+```conf
 10.143.20.2	www.yonder_devops.com yonder_devops.com
 ```
 

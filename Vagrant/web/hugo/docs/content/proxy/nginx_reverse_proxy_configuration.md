@@ -2,13 +2,15 @@
 title: "Nginx reverse proxy config"
 date: 2018-01-28T21:48:10+01:00
 anchor: "nginx_reverse_proxy_config"
-weight: 20
+weight: 32
 ---
 
 1) For reverse proxy edit conf
-```console
+
+```bash
 vim /etc/nginx/sites-enabled/yonder_devops.com.conf
 ```
+
 ```nginx
 server {
 	listen 10.143.20.2:80;
@@ -54,7 +56,8 @@ server {
 ```
 
 2) Restart nginx
-```console
+
+```bash
 systemctl restart nginx
 ```
 

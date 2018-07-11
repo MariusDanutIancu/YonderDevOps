@@ -2,6 +2,6 @@
 title: "Monitor"
 date: 2018-01-28T21:48:10+01:00
 anchor: "monitor"
-weight: 20
+weight: 60
 ---
 
