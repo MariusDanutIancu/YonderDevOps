@@ -5,7 +5,7 @@ anchor: "selinux_config"
 weight: 20
 ---
 
-0) Set selinux to permisive
+Set selinux to permisive
 ```console
 setenforce 0
 getenforce
