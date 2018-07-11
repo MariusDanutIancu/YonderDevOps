@@ -3,6 +3,12 @@ languageCode = "en-us"
 title = "Yonder Devops"
 theme = "kraiklyn"
 
+pygmentsCodefences = true
+pygmentsCodeFencesGuesSsyntax = false
+pygmentsOptions = ""
+pygmentsStyle = "monokai"
+pygmentsUseClasses = true
+
 [params]
 sidebarColor = "red"
 externalTitle = "External sites"
@@ -17,4 +23,3 @@ weight = 10
 name = "Yonder Devops Docs"
 url = "http://10.143.20.3:1313"
 weight = 10
-

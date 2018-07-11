@@ -2,7 +2,7 @@
 title: "Nginx reverse proxy config"
 date: 2018-01-28T21:48:10+01:00
 anchor: "nginx_reverse_proxy_config"
-weight: 32
+weight: 33
 ---
 
 1) For reverse proxy edit conf
