@@ -1,8 +1,8 @@
 ---
-title: "Monitor configuration"
+title: "Firewall configuration"
 date: 2018-01-28T21:48:10+01:00
-anchor: "Monitor configuration"
-weight: 61
+anchor: "firewall_web_config"
+weight: 42
 ---
 
 0) Install firewalld
@@ -48,17 +48,46 @@ firewall-cmd --reload
 firewall-cmd --get-zones
 ```
 
-7) Add rules to zone and check
+7) Create and edit custom service file
+```bash
+cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/go-interns.xml
+vi /etc/firewalld/services/go-interns.xml
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>go-interns</short>
+  <description>go-intern service</description>
+  <port protocol="tcp" port="18080"/>
+</service>
+```
+
+8) Create and edit custom service file
+```bash
+cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/hugo.xml
+vi /etc/firewalld/services/hugo.xml
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>hugo</short>
+  <description>Hugo service</description>
+  <port protocol="tcp" port="1313"/>
+</service>
+```
+
+9) Add rules to zone and check
 
 ```bash
 firewall-cmd --zone=yonder --permanent --add-service=ssh
 firewall-cmd --zone=yonder --permanent --add-service=dhcp
 firewall-cmd --zone=yonder --permanent --add-service=snmp
-firewall-cmd --zone=yonder --permanent --add-service=http
-firewall-cmd --zone=yonder --permanent --add-service=https
+firewall-cmd --zone=yonder --permanent --add-service=postgre
 firewall-cmd --zone=yonder --list-all
 ```
-8) Add interfaces and set zone as default 
+10) Add interfaces and set zone as default 
 
 ```bash
 firewall-cmd --zone=yonder --permanent --change-interface=eth0
@@ -67,7 +96,7 @@ firewall-cmd --zone=yonder --permanent --change-interface=wlol
 firewall-cmd --set-default-zone=home
 ```
 
-9) Reload and check if the changes were made
+11) Reload and check if the changes were made
 
 ```bash
 systemctl restart network

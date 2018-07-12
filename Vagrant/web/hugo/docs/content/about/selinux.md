@@ -1,7 +1,7 @@
 ---
-title: "Selinux config"
+title: "Selinux"
 date: 2018-01-28T21:48:10+01:00
-anchor: "selinux_config"
+anchor: "selinux"
 weight: 11
 ---
 

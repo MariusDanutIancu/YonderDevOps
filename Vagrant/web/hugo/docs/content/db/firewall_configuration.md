@@ -1,8 +1,8 @@
 ---
-title: "Monitor configuration"
+title: "Firewall configuration"
 date: 2018-01-28T21:48:10+01:00
-anchor: "Monitor configuration"
-weight: 61
+anchor: "firewall_db_config"
+weight: 52
 ---
 
 0) Install firewalld
@@ -48,17 +48,32 @@ firewall-cmd --reload
 firewall-cmd --get-zones
 ```
 
-7) Add rules to zone and check
+7) Create and edit custom service file
+```bash
+cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/postgre.xml
+vi /etc/firewalld/services/postgre.xml
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>postgre</short>
+  <description>Postgre service</description>
+  <port protocol="tcp" port="5432"/>
+</service>
+
+```
+
+8) Add rules to zone and check
 
 ```bash
 firewall-cmd --zone=yonder --permanent --add-service=ssh
 firewall-cmd --zone=yonder --permanent --add-service=dhcp
 firewall-cmd --zone=yonder --permanent --add-service=snmp
-firewall-cmd --zone=yonder --permanent --add-service=http
-firewall-cmd --zone=yonder --permanent --add-service=https
+firewall-cmd --zone=yonder --permanent --add-service=postgre
 firewall-cmd --zone=yonder --list-all
 ```
-8) Add interfaces and set zone as default 
+9) Add interfaces and set zone as default 
 
 ```bash
 firewall-cmd --zone=yonder --permanent --change-interface=eth0
@@ -67,7 +82,7 @@ firewall-cmd --zone=yonder --permanent --change-interface=wlol
 firewall-cmd --set-default-zone=home
 ```
 
-9) Reload and check if the changes were made
+10) Reload and check if the changes were made
 
 ```bash
 systemctl restart network

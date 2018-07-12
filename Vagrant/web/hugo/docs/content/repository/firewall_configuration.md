@@ -1,8 +1,8 @@
 ---
-title: "Monitor configuration"
+title: "Firewall configuration"
 date: 2018-01-28T21:48:10+01:00
-anchor: "Monitor configuration"
-weight: 61
+anchor: "firewall_monitor_config"
+weight: 72
 ---
 
 0) Install firewalld
