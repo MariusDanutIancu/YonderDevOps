@@ -34,7 +34,7 @@
 #	Hostname: repository
 #	CPU: 1 
 #	RAM: 1GB
-#	IP: 10.143.20.5
+#	IP: 10.143.20.6
 #	OS-ul sa aiba toate update-urile instalate.
 
 
@@ -61,35 +61,14 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     	end
 		
-		proxy_config.vm.provision "file", source: "proxy/nginx.conf", destination: "/home/vagrant/files/nginx.conf"
-		proxy_config.vm.provision "file", source: "proxy/yonder_devops.com.conf", destination: "/home/vagrant/files/yonder_devops.com.conf"
+		proxy_config.vm.provision "file", source: "proxy/nginx/nginx.conf", destination: "/home/vagrant/files/nginx.conf"
+		proxy_config.vm.provision "file", source: "proxy/nginx/yonder_devops.com.conf", destination: "/home/vagrant/files/yonder_devops.com.conf"
 
-		proxy_config.vm.provision "shell", path: "provision_scripts/proxy.sh"
-
-  	end
-
-	config.vm.define :web do |web_config| 
-    		
-		web_config.vm.host_name = 'web'
-        web_config.vm.box = "#{os}"		
-		web_config.vm.network :private_network, :ip =>'10.143.20.3'
-
-		web_config.vm.provider :libvirt do |lv|
-			lv.memory = 1024
-            lv.cpus = 1
-			lv.driver = "kvm"
-        	lv.username = "root"
-			lv.password = "root"
-    	end
-	
-  		web_config.vm.provision "file", source: "web/go-intern/conf.json", destination: "/home/vagrant/files/conf.json"
-  		web_config.vm.provision "file", source: "web/go-intern/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
-  		web_config.vm.provision "file", source: "web/hugo/docs", destination: "/home/vagrant/files/hugo/docs"
-
-  		web_config.vm.provision "shell", path: "provision_scripts/web.sh"
+		proxy_config.vm.provision "shell", path: "proxy/scripts/proxy.sh"
+		proxy_config.vm.provision "shell", path: "proxy/scripts/proxy_firewalld.sh"
 
   	end
-	
+
 	config.vm.define :db do |db_config| 
     		
 		db_config.vm.host_name = 'db'
@@ -104,9 +83,11 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     	end
 		
-		db_config.vm.provision "file", source: "db/database_script.sh", destination: "/home/vagrant/files/database_script.sh"
+		db_config.vm.provision "file", source: "db/scripts/database_script.sh", destination: "/home/vagrant/files/database_script.sh"
+		db_config.vm.provision "file", source: "db/firewalld/postgre.xml", destination: "/home/vagrant/files/firewalld/postgre.xml"
 
-		db_config.vm.provision "shell", path: "provision_scripts/db.sh"
+		db_config.vm.provision "shell", path: "db/scripts/db.sh"
+		db_config.vm.provision "shell", path: "db/scripts/db_firewalld.sh"
   
   	end
 
@@ -124,8 +105,8 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     	end
 
-		monitor_config.vm.provision "shell", path: "provision_scripts/monitor.sh"
-  
+		monitor_config.vm.provision "shell", path: "monitor/scripts/monitor.sh"
+  		monitor_config.vm.provision "shell", path: "monitor/scripts/monitor_firewalld.sh"
   	end
 
   	config.vm.define :repository do |repository_config| 
@@ -143,10 +124,36 @@ Vagrant.configure("2") do |config|
     	end
 
     	repository_config.vm.provision "file", source: "repository/rpm", destination: "/home/vagrant/files/rpm"
-    	repository_config.vm.provision "file", source: "repository/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
+    	repository_config.vm.provision "file", source: "repository/repo/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
 
-		repository_config.vm.provision "shell", path: "provision_scripts/repository.sh"
+		repository_config.vm.provision "shell", path: "repository/scripts/repository.sh"
+		repository_config.vm.provision "shell", path: "repository/scripts/repository_firewalld.sh"
   
+  	end
+
+  		config.vm.define :web do |web_config| 
+    		
+		web_config.vm.host_name = 'web'
+        web_config.vm.box = "#{os}"		
+		web_config.vm.network :private_network, :ip =>'10.143.20.3'
+
+		web_config.vm.provider :libvirt do |lv|
+			lv.memory = 1024
+            lv.cpus = 1
+			lv.driver = "kvm"
+        	lv.username = "root"
+			lv.password = "root"
+    	end
+	
+  		web_config.vm.provision "file", source: "web/go-intern/conf.json", destination: "/home/vagrant/files/conf.json"
+  		web_config.vm.provision "file", source: "web/go-intern/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
+  		web_config.vm.provision "file", source: "web/hugo/docs", destination: "/home/vagrant/files/hugo/docs"
+  		web_config.vm.provision "file", source: "web/firewalld/go-interns.xml", destination: "/home/vagrant/files/firewalld/go-interns.xml"
+  		web_config.vm.provision "file", source: "web/firewalld/hugo.xml", destination: "/home/vagrant/files/firewalld/hugo.xml"
+
+  		web_config.vm.provision "shell", path: "web/scripts/web.sh"
+  		web_config.vm.provision "shell", path: "web/scripts/web_firewalld.sh"
+
   	end
 
 end

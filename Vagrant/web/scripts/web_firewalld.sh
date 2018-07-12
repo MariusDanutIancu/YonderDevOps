@@ -2,11 +2,11 @@ systemctl enable firewalld
 systemctl start firewalld
 setenforce 0
 
+cp /home/vagrant/files/firewalld/go-interns.xml /etc/firewalld/services/go-interns.xml 
+cp /home/vagrant/files/firewalld/hugo.xml /etc/firewalld/services/hugo.xml 
+
 firewall-cmd --permanent --new-zone=yonder
 firewall-cmd --reload
-
-cp /home/vagrant/files/firewalld/go-interns.xml /etc/firewalld/services/postgre.xml 
-cp /home/vagrant/files/firewalld/hugo.xml /etc/firewalld/services/postgre.xml 
 
 firewall-cmd --zone=yonder --permanent --add-service=ssh
 firewall-cmd --zone=yonder --permanent --add-service=dhcp

@@ -53,4 +53,4 @@ cp -r /home/vagrant/files/hugo/docs/* /home/hugo
 cd /home/vagrant/files/hugo/docs
 
 # start hugo
-nohup hugo server --bind 10.143.20.3 -p 443 -b https://10.143.20.2/docs -D & 2> /dev/null
+nohup hugo server --bind 10.143.20.3 -p 443 -b https://10.143.20.2/docs -D &
