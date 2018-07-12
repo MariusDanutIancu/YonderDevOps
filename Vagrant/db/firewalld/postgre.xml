@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+   <short>postgre</short>
+   <description>Postgre service</description>
+   <port protocol="tcp" port="5432"/>
+</service>

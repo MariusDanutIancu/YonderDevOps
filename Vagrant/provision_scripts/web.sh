@@ -18,11 +18,11 @@ userdel gouser
 cp /home/vagrant/files/localrepo.repo /etc/yum.repos.d/localrepo.repo
 
 # set yum
-yum clean all
-yum –y update
+yum -y clean all
+yum -y update
 
 # install go-intern
-yum --enablerepo=localrepo install go-intern
+yum -y --enablerepo=localrepo install go-interns
 
 # configure database configuration
 cp /home/vagrant/files/conf.json /opt/go-interns/conf.json
@@ -37,8 +37,8 @@ cd /etc/yum.repos.d/
 wget https://copr.fedorainfracloud.org/coprs/daftaupe/hugo/repo/epel-7/daftaupe-hugo-epel-7.repo
 
 # set yum
-yum clean all
-yum –y update
+yum -y clean all
+yum -y update
 
 # install hugo
 yum -y install hugo
