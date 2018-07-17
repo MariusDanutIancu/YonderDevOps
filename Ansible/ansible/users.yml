@@ -1,17 +1,21 @@
 - hosts: all
   become: yes
   become_method: sudo
-  gather_facts: False
+  gather_facts: no
+ 
   tasks:
+    - name: Install Python
+      raw: test -e /usr/bin/python || (apt -y update && apt  install -y python)
+
     - name: ensure local user has a matching account on the host
       user:
-        state: present
-        name: "{{ lookup('env', 'USER') }}"
-        shell: /bin/bash
+        state: 'present'
+        name: 'marius'
+        shell: '/bin/bash'
+        home: '/home/marius/'
         groups: sudo
-      register: user
 
     - name: ensure local user's public key is on the host
       authorized_key:
-        user: "{{ lookup('env', 'USER') }}"
-        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        user: "marius"
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"

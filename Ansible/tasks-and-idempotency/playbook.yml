@@ -1,0 +1,37 @@
+- hosts: all
+  vars:
+    NODEJS_VERSION: "10"
+  tasks:
+    - name: ensure ruby "brightbox" apt repository is installed from launchpad
+      apt_repository: 
+        repo: deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu xenial main
+        state: present
+
+    - name: ensure node apt repository is installed from nodesource
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_10.x xenial main
+        state: present
+
+    - name: ensure node gpg key is installed from deb.nodesource.com
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+
+    - name: ensure apt cache is updated
+      apt:
+        update_cache: yes
+
+    - name: ensure nodejs is installed
+      apt: 
+        name: nodejs
+        state: latest
+
+    - name: ensure ruby2.3 is installed
+      apt:
+        name: ruby2.3
+        state: present
+
+    - name: ensure nginx is installed
+      apt:
+        name: nginx
+        state: latest
