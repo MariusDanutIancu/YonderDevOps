@@ -2,7 +2,7 @@
   become: yes
   become_method: sudo
   gather_facts: no
-  
+
   tasks:
     - name: Install Python
       raw: test -e /usr/bin/python || (apt -y update && apt  install -y python)

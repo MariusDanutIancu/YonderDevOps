@@ -6,10 +6,10 @@
   vars:
     users:
       - name: marius
-        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYuLEr3T6rVniLanFFlC6XZEIh4xfrVktnqjqrnfkMYCgjVI4o34IALNy9tifFdyZsMWpuMyPLGjI5XVpTcOMwFDPCWiwjlkdE1k95Zr2IRZn/X7zikTR2dcbvB3+gSrle2vFbm8e4gf0+9u8YzQAe081wFpTmMcvhyYZqAbzkal8ClmnO8+CahOKhGEiipjt1gPLmVyxQbp2fMExTweXaQMzotmdMZCiqJA3v11dYYiu4826x6eqa5EeJHWs02PQeuQ+CN82gtCixH0lH1swQZeJ6e96VI9fZJlY6IGDdN6oeZ0Qk23BHqm9CrPRf/pWIYXJvrcxEtwXfjjVXDhim40skZsL/OXNhEmvp9PGooNkaan3kD+SGEnirsZzrpzSep7Ml7S0v7oJGXVWtwsCzxAvuSKH8izQGJ34NTFBCMLhywmyYvAIEK8xKj5HmzknpC6PKFTQxGORaA9qSxG9rTtEv9zjskUdeF8zmSlHLBT+Nj+L6mi3WrKBql7lKHP17kD18K0QEpxSgQCdWv35kVIK95MudoCW3pxPAXUWCmTnUjdGpx4zKOc5+6DvU5l1c0M4sjoNSWI7h02og46FrTg9DvqZsTRxh7Vd8MlJsxCm5Twz8KBc2v2gF7f7nExIK6dLLEkdhFRPG4d+tlPVA7pNMLCxqoCEnmGA8WkBpUw== marius
+        key: "{{ lookup('file', '/home/marius/Yonder/Ansible/variables-loops-and-filters/marius.pub') }}"
       - name: workshop
-        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3DmXNR1rP+CGfMmwcowd4wN9uf6lKaN++9SyowsOmVQyY+x1jlka4rFUxljDrbJLyTmmdwH4fcOs/6ixZlMnNkbYcC48F8YrHWZ6lcheak52q365NRViooG+LuVZU81DOv/+roY0eTBTs6d/mlRC8Us11kpKrtWi7zvFiv7Ld25Uo5yMPOxvDigJzrO0byVefq001mx5EEfDn9uH7nWU/e3wOIDls5kYtEWuI1QHWyOrbLe8O+YiHznBjWa2r6dCobr8KfyfwBuHy4PxS4f17GJ9kGQXWOrVOjMJiblkHndQ5dMn8hQAt6Vir0EJL3XFE0xox9oqxV/LCH9lHc6mj workshop
-  
+        key: "{{ lookup('file', '/home/marius/Yonder/Ansible/variables-loops-and-filters/workshop.key') }}"
+
   tasks:
       
     - name: Install Python

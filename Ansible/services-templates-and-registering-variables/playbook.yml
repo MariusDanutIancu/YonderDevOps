@@ -1,0 +1,72 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+  
+  vars:
+    node_app_path: /mnt/node-app.js
+    
+  tasks:
+    - name: ensure node ppa is installed
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_5.x xenial main
+        state: present
+
+    - name: ensure node gpg key is installed
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+    
+    - name: install upstart
+      apt:
+        name: upstart-sysv
+        state: present
+
+    - name: ensure apt cache is updated
+      apt:
+        update_cache: yes
+
+    - name: ensure apt packages are installed
+      apt:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - nodejs
+        - nginx
+
+    - name: register which_nodejs
+      command: which nodejs
+      register: which_nodejs
+
+    - name: debug output
+      debug: var=which_nodejs
+
+    - name: ensure nginx is configured
+      template:
+        src: nginx.conf
+        dest: /etc/nginx/conf.d/
+
+    - name: ensure nginx has been restarted
+      service:
+        name: nginx
+        state: restarted
+
+    - name: ensure app code is on the box in /mnt
+      copy:
+        src: node-app.js
+        dest: /mnt/node-app.js
+
+    - name: ensure upstart script for app is in place
+      template:
+        # src: node-app.conf
+        # dest: /etc/init
+        src: node-app.md
+        dest: /etc/systemd/system/node-app.service
+
+    - name: reload systemd
+      command: systemctl daemon-reload
+      
+    - name: start app
+      service:
+        name: node-app
+        state: restarted
+      # when: ansible_service_mgr == "upstart"

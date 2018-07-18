@@ -1,6 +1,7 @@
 - hosts: all
   become: yes
   become_method: sudo
+  
   vars:
     packages:
       - nodejs
@@ -10,26 +11,52 @@
       - https://deb.nodesource.com/gpgkey/nodesource.gpg.key
     apt_repos:
       - ppa:brightbox/ruby-ng
-      - deb https://deb.nodesource.com/node_5.x trusty main
+      - deb https://deb.nodesource.com/node_5.x xenial main
+  
   tasks:
     - name: ensure apt keys are installed for non-launchpad repos
-      apt_key:
+      apt_key: 
+        url: "{{ item }}"
+        state: present
+      with_items: "{{apt_keys}}"
 
     - name: ensure apt repositories are installed
-      apt_repository:
+      apt_repository: 
+        repo: "{{ item }}"
+        state: present
+      with_items: "{{apt_repos}}"
 
     - name: ensure apt cache is updated
       apt:
+        update_cache: yes
 
     - name: ensure apt packages are installed
       apt:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{packages}}" 
 
     - name: ensure nginx is configured
       template:
+        src: nginx.conf
+        dest: /etc/nginx/conf.d
+        owner: marius
+        group: sudo
+        mode: 0644
 
     - name: ensure nginx has been restarted
       service:
+        name: nginx
+        state: restarted
+
+    - name: display content of all app. files in dir
+      debug: msg={{lookup('fileglob', '/home/marius/Yonder/Ansible/nginx-up-front/app.*')}}
 
     - name: ensure app code is on the box in /mnt
       copy:
-      # hint, check out with_fileglob
+        src: "{{ item }}"
+        dest: "/mnt/"
+        owner: "marius"
+        mode: 0600
+      with_fileglob:
+        - "/home/marius/Yonder/Ansible/nginx-up-front/app.*"
