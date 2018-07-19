@@ -4,15 +4,13 @@
   gather_facts: no
   
   tasks:
-    - name: Install Python
-      raw: test -e /usr/bin/python || (apt -y update && apt  install -y python)
-
+  
     - name: ensure local user has a matching account on the host
       user:
         state: present
         name: "{{ lookup('env', 'USER') }}"
         shell: /bin/bash
-        groups: sudo
+        groups: wheel
       register: user
 
     - name: ensure local user's public key is on the host
@@ -20,7 +18,6 @@
         user: "{{ lookup('env', 'USER') }}"
         key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-    # this should only be used for development!
     - name: ensure sudo group can sudo without a password
       lineinfile:
         dest: /etc/sudoers

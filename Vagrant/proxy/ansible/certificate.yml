@@ -1,0 +1,42 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+
+    - name: Creates directory
+      file: 
+        path: /etc/nginx/ssl/theos.in 
+        state: directory
+
+    - name: return motd to registered var
+      command: cd /etc/nginx/ssl/theos.in 
+
+    - name: return motd to registered var
+      command: openssl genrsa -des3 -out self-ssl.key -passout pass:marius 2048
+
+    - name: return motd to registered var
+      command: openssl req -new -key self-ssl.key -out self-ssl.csr -passin pass:marius -subj "/C=RO/ST=Iasi/L=Iasi/O=Yonder/OU=Devops/CN=yonder_devops.com"
+
+    - name: Copy files from foo to bar
+      copy: 
+        remote_src: True 
+        src: self-ssl.key 
+        dest: self-ssl.original
+
+    - name: return motd to registered var
+      command: openssl rsa -in self-ssl.original -out self-ssl.key -passin pass:marius
+
+    - name: return motd to registered var
+      command: openssl rsa -in self-ssl.original -out self-ssl.key -passin pass:marius
+
+    - name: Clean artifact path
+      file:
+        state: absent
+        path: self-ssl.original
+
+    - name: return motd to registered var
+      command: openssl x509 -req -days 365 -in self-ssl.csr -signkey self-ssl.key -out self-ssl.crt
+
+    - name: return motd to registered var
+      command: cd /

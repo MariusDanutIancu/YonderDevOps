@@ -1,0 +1,26 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  
+  vars:
+    packages:
+      - vim
+
+  tasks:
+    - name: return motd to registered var
+      command: setenforce 0
+
+    - name: update the system
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Install Python
+      raw: test -e /usr/bin/python || (apt -y update && apt  install -y python)
+    
+    - name: ensure apt packages are installed
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{packages}}"

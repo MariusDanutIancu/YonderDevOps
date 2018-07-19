@@ -1,0 +1,62 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+
+    - name: Creates directory
+      file: path=/etc/nginx/sites-available state=directory
+
+    - name: Creates directory
+      file: path=/etc/nginx/sites-enabled state=directory
+
+    - name: Creates directory
+      file: path=/var/www/yonder_devops.com/public_html state=directory
+    
+    - name: Creates directory
+      file: path=/var/www/yonder_devops.com/public_html/stagiu state=directory
+
+    - name: ensure file exists
+      copy:
+        content: ""
+        dest: /var/www/yonder_devops.com/public_html/index.html
+        force: no
+        group: wheel
+        owner: marius
+        mode: 0644
+
+    - name: return motd to registered var
+      command: echo "Hello world" > /var/www/yonder_devops.com/public_html/index.html
+
+    - name: return motd to registered var
+      command: cp /var/www/yonder_devops.com/public_html/index.html /var/www/yonder_devops.com/public_html/stagiu
+       
+    - name: return motd to registered var
+      command: chmod 755 /var/www/yonder_devops.com/public_html
+
+    - name: return motd to registered var
+      command: iptables -A INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT 
+        
+    - name: return motd to registered var
+      command: ln -s /etc/nginx/sites-available/yonder_devops.com.conf /etc/nginx/sites-enabled/yonder_devops.com.conf
+      
+    - name: ensure nginx is configured
+      template:
+        src: /home/marius/Yonder/Vagrant/proxy/nginx/nginx.conf
+        dest: /etc/nginx/
+        owner: marius
+        group: wheel
+        mode: 0644
+
+    - name: ensure nginx is configured
+      template:
+        src: /home/marius/Yonder/Vagrant/proxy/nginx/yonder_devops.com.conf
+        dest: /etc/nginx/sites-available/yonder_devops.com.conf
+        owner: marius
+        group: wheel
+        mode: 0644
+
+    - name: ensure nginx has been restarted
+      service:
+        name: nginx
+        state: restarted

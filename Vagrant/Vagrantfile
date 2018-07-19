@@ -61,11 +61,15 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     	end
 		
-		proxy_config.vm.provision "file", source: "proxy/nginx/nginx.conf", destination: "/home/vagrant/files/nginx.conf"
-		proxy_config.vm.provision "file", source: "proxy/nginx/yonder_devops.com.conf", destination: "/home/vagrant/files/yonder_devops.com.conf"
+		# proxy_config.vm.provision 'ansible' do |ansible|
+  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/global/scripts/ansible/install.yml'
+  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/global/users/ansible/users.yml'
+  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/install.yml'
+  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/certificate.yml'
+  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/nginx.yml'
+  # 		end
 
-		proxy_config.vm.provision "shell", path: "proxy/scripts/proxy.sh"
-		proxy_config.vm.provision "shell", path: "proxy/scripts/proxy_firewalld.sh"
+  		proxy_config.vm.provision "shell", path: "proxy/scripts/proxy_firewalld.sh"
 
   	end
 
