@@ -1,0 +1,14 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - import_tasks: /home/marius/Yonder/Vagrant/proxy/ansible/install.yml
+      vars:
+        packages:
+          - nginx
+        ansible_distribution_major_version: "7"
+
+    - import_tasks: /home/marius/Yonder/Vagrant/proxy/ansible/certificate.yml
+    
+    - import_tasks: /home/marius/Yonder/Vagrant/proxy/ansible/nginx.yml

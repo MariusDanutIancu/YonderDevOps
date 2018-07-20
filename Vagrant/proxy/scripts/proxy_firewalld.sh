@@ -14,7 +14,7 @@ firewall-cmd --zone=yonder --permanent --add-service=https
 firewall-cmd --zone=yonder --permanent --change-interface=eth0
 firewall-cmd --zone=yonder --permanent --change-interface=eth1
 firewall-cmd --zone=yonder --permanent --change-interface=wlol
-firewall-cmd --set-default-zone=home
+firewall-cmd --set-default-zone=yonder
 
 systemctl restart network
 systemctl reload firewalld

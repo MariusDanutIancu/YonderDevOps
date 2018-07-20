@@ -50,42 +50,49 @@ Vagrant.configure("2") do |config|
 	config.vm.define :proxy do |proxy_config| 
     		
 		proxy_config.vm.host_name = 'proxy'
-        proxy_config.vm.box = "#{os}"		
-        proxy_config.vm.network :private_network, :ip =>'10.143.20.2'
+    proxy_config.vm.box = "#{os}"		
+    proxy_config.vm.network :private_network, :ip =>'10.143.20.2'
 
 		proxy_config.vm.provider :libvirt do |lv|
 			lv.memory = 1024
-        	lv.cpus = 1
+      lv.cpus = 1
 			lv.driver = "kvm"
-        	lv.username = "root"
+      lv.username = "root"
 			lv.password = "root"
-    	end
+    end
 		
-		# proxy_config.vm.provision 'ansible' do |ansible|
-  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/global/scripts/ansible/install.yml'
-  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/global/users/ansible/users.yml'
-  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/install.yml'
-  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/certificate.yml'
-  #   		ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/nginx.yml'
-  # 		end
+    proxy_config.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '/home/marius/Yonder/Vagrant/global/scripts/ansible/install.yml'
+        ansible.host_key_checking = false
+    end
+    
+    proxy_config.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '/home/marius/Yonder/Vagrant/global/users/ansible/users.yml'
+        ansible.host_key_checking = false
+    end
 
-  		proxy_config.vm.provision "shell", path: "proxy/scripts/proxy_firewalld.sh"
+    proxy_config.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '/home/marius/Yonder/Vagrant/proxy/ansible/configure_proxy.yml'
+        ansible.host_key_checking = false
+    end       
 
-  	end
+  	proxy_config.vm.provision "shell", path: "proxy/scripts/proxy_firewalld.sh"
+
+  end
 
 	config.vm.define :db do |db_config| 
     		
 		db_config.vm.host_name = 'db'
-        db_config.vm.box = "#{os}"		
+    db_config.vm.box = "#{os}"		
 		db_config.vm.network :private_network, :ip =>'10.143.20.4'
 
 		db_config.vm.provider :libvirt do |lv|
 			lv.memory = 1024
-        	lv.cpus = 1
+      lv.cpus = 1
 			lv.driver = "kvm"
-        	lv.username = "root"
+      lv.username = "root"
 			lv.password = "root"
-    	end
+    end
 		
 		db_config.vm.provision "file", source: "db/scripts/database_script.sh", destination: "/home/vagrant/files/database_script.sh"
 		db_config.vm.provision "file", source: "db/firewalld/postgre.xml", destination: "/home/vagrant/files/firewalld/postgre.xml"
@@ -93,71 +100,71 @@ Vagrant.configure("2") do |config|
 		db_config.vm.provision "shell", path: "db/scripts/db.sh"
 		db_config.vm.provision "shell", path: "db/scripts/db_firewalld.sh"
   
-  	end
+  end
 
 	config.vm.define :monitor do |monitor_config| 
     		
 		monitor_config.vm.host_name = 'monitor'
-        monitor_config.vm.box = "#{os}"		
+    monitor_config.vm.box = "#{os}"		
 		monitor_config.vm.network :private_network, :ip =>'10.143.20.5'
 
 		monitor_config.vm.provider :libvirt do |lv|
 			lv.memory = 1024
-        	lv.cpus = 1
+      lv.cpus = 1
 			lv.driver = "kvm"
-        	lv.username = "root"
+      lv.username = "root"
 			lv.password = "root"
-    	end
+    end
 
-		monitor_config.vm.provision "shell", path: "monitor/scripts/monitor.sh"
-  		monitor_config.vm.provision "shell", path: "monitor/scripts/monitor_firewalld.sh"
-  	end
+	  monitor_config.vm.provision "shell", path: "monitor/scripts/monitor.sh"
+  	 monitor_config.vm.provision "shell", path: "monitor/scripts/monitor_firewalld.sh"
+    end
 
-  	config.vm.define :repository do |repository_config| 
+  config.vm.define :repository do |repository_config| 
     		
 		repository_config.vm.host_name = 'repository'
-        repository_config.vm.box = "#{os}"		
+    repository_config.vm.box = "#{os}"		
 		repository_config.vm.network :private_network, :ip =>'10.143.20.6'
 
 		repository_config.vm.provider :libvirt do |lv|
-			lv.memory = 1024
-        	lv.cpus = 1
-			lv.driver = "kvm"
-        	lv.username = "root"
-			lv.password = "root"
-    	end
+      lv.memory = 1024
+      lv.cpus = 1
+      lv.driver = "kvm"
+      lv.username = "root"
+      lv.password = "root"
+    end
 
-    	repository_config.vm.provision "file", source: "repository/rpm", destination: "/home/vagrant/files/rpm"
-    	repository_config.vm.provision "file", source: "repository/repo/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
+    repository_config.vm.provision "file", source: "repository/rpm", destination: "/home/vagrant/files/rpm"
+    repository_config.vm.provision "file", source: "repository/repo/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
 
 		repository_config.vm.provision "shell", path: "repository/scripts/repository.sh"
 		repository_config.vm.provision "shell", path: "repository/scripts/repository_firewalld.sh"
   
-  	end
+  end
 
-  		config.vm.define :web do |web_config| 
+  config.vm.define :web do |web_config| 
     		
 		web_config.vm.host_name = 'web'
-        web_config.vm.box = "#{os}"		
+    web_config.vm.box = "#{os}"		
 		web_config.vm.network :private_network, :ip =>'10.143.20.3'
 
 		web_config.vm.provider :libvirt do |lv|
-			lv.memory = 1024
-            lv.cpus = 1
-			lv.driver = "kvm"
-        	lv.username = "root"
-			lv.password = "root"
-    	end
+      lv.memory = 1024
+      lv.cpus = 1
+      lv.driver = "kvm"
+      lv.username = "root"
+      lv.password = "root"
+    end
 	
-  		web_config.vm.provision "file", source: "web/go-intern/conf.json", destination: "/home/vagrant/files/conf.json"
-  		web_config.vm.provision "file", source: "web/go-intern/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
-  		web_config.vm.provision "file", source: "web/hugo/docs", destination: "/home/vagrant/files/hugo/docs"
-  		web_config.vm.provision "file", source: "web/firewalld/go-interns.xml", destination: "/home/vagrant/files/firewalld/go-interns.xml"
-  		web_config.vm.provision "file", source: "web/firewalld/hugo.xml", destination: "/home/vagrant/files/firewalld/hugo.xml"
+    web_config.vm.provision "file", source: "web/go-intern/conf.json", destination: "/home/vagrant/files/conf.json"
+  	web_config.vm.provision "file", source: "web/go-intern/localrepo.repo", destination: "/home/vagrant/files/localrepo.repo"
+  	web_config.vm.provision "file", source: "web/hugo/docs", destination: "/home/vagrant/files/hugo/docs"
+  	web_config.vm.provision "file", source: "web/firewalld/go-interns.xml", destination: "/home/vagrant/files/firewalld/go-interns.xml"
+  	web_config.vm.provision "file", source: "web/firewalld/hugo.xml", destination: "/home/vagrant/files/firewalld/hugo.xml"
 
-  		web_config.vm.provision "shell", path: "web/scripts/web.sh"
-  		web_config.vm.provision "shell", path: "web/scripts/web_firewalld.sh"
+  	web_config.vm.provision "shell", path: "web/scripts/web.sh"
+  	web_config.vm.provision "shell", path: "web/scripts/web_firewalld.sh"
 
-  	end
+  end
 
 end
