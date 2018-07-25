@@ -13,6 +13,7 @@ firewall-cmd --zone=yonder --permanent --add-service=https
 
 firewall-cmd --zone=yonder --permanent --add-port=514/tcp
 firewall-cmd --zone=yonder --permanent --add-port=514/udp
+firewall-cmd --zone=yonder --permanent --add-port=161/udp 
 
 firewall-cmd --zone=yonder --permanent --change-interface=eth0
 firewall-cmd --zone=yonder --permanent --change-interface=eth1
