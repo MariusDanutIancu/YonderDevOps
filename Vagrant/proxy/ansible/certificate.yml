@@ -1,30 +1,27 @@
-- name: Creates directory
+- name: Creates certificate directory
   file: 
     path: /etc/nginx/ssl/theos.in 
     state: directory
 
-- name: return motd to registered var
+- name: Create key
   command: chdir=/etc/nginx/ssl/theos.in openssl genrsa -des3 -out self-ssl.key -passout pass:marius 2048
 
-- name: return motd to registered var
+- name: Create certificate
   command: chdir=/etc/nginx/ssl/theos.in openssl req -new -key self-ssl.key -out self-ssl.csr -passin pass:marius -subj "/C=RO/ST=Iasi/L=Iasi/O=Yonder/OU=Devops/CN=yonder_devops.com"
 
-- name: Copy files from foo to bar
+- name: Copy files from self-ssl.key to self-ssl.original
   copy: 
     remote_src: True 
     src: /etc/nginx/ssl/theos.in/self-ssl.key 
     dest: /etc/nginx/ssl/theos.in/self-ssl.original
 
-- name: return motd to registered var
+- name: Remove certificate passphrase
   command: chdir=/etc/nginx/ssl/theos.in openssl rsa -in self-ssl.original -out self-ssl.key -passin pass:marius
 
-- name: return motd to registered var
-  command: chdir=/etc/nginx/ssl/theos.in openssl rsa -in self-ssl.original -out self-ssl.key -passin pass:marius
-
-- name: Clean artifact path
+- name: Remove self-ssl.original
   file:
     state: absent
     path: /etc/nginx/ssl/theos.in/self-ssl.original
 
-- name: return motd to registered var
+- name: Sign certificate
   command: chdir=/etc/nginx/ssl/theos.in openssl x509 -req -days 365 -in self-ssl.csr -signkey self-ssl.key -out self-ssl.crt

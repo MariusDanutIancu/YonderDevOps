@@ -1,36 +1,36 @@
-- name: Creates directory
+- name: Creates nginx config directory
   file: path=/etc/nginx/sites-available state=directory
 
-- name: Creates directory
+- name: Creates nginx config directory
   file: path=/etc/nginx/sites-enabled state=directory
 
-- name: Creates directory
+- name: Creates domain directory
   file: path=/var/www/yonder_devops.com/public_html state=directory
     
-- name: Creates directory
+- name: Creates domain directory
   file: path=/var/www/yonder_devops.com/public_html/stagiu state=directory
 
-- name: chmod
+- name: Change domain directory permisions
   file:
     path: /var/www/yonder_devops.com/public_html
     owner: marius
     group: wheel
     mode: 755
     
-- name: Copy files from foo to bar
+- name: Copy files from host to proxy domain directory
   copy: 
     src: /home/marius/Yonder/Vagrant/proxy/files/index.html
     dest: /var/www/yonder_devops.com/public_html
 
-- name: Copy files from foo to bar
+- name: Copy files from host to proxy domain directory
   copy: 
     src: /home/marius/Yonder/Vagrant/proxy/files/stagiu/index.html
     dest: /var/www/yonder_devops.com/public_html/stagiu
 
-- name: return motd to registered var
+- name: Configure iptables
   command: iptables -A INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT 
         
-- name: ensure nginx is configured
+- name: Configure nginx
   template:
     src: /home/marius/Yonder/Vagrant/proxy/nginx/nginx.conf
     dest: /etc/nginx/
@@ -38,7 +38,7 @@
     group: wheel
     mode: 0644
 
-- name: ensure nginx is configured
+- name: Configure nginx
   template:
     src: /home/marius/Yonder/Vagrant/proxy/nginx/yonder_devops.com.conf
     dest: /etc/nginx/sites-available/yonder_devops.com.conf
@@ -46,10 +46,10 @@
     group: wheel
     mode: 0644
 
-- name: return motd to registered var
+- name: Create symbolic link
   command: ln -sf /etc/nginx/sites-available/yonder_devops.com.conf /etc/nginx/sites-enabled/yonder_devops.com.conf
 
-- name: ensure nginx has been restarted
+- name: Restart nginx service
   service:
     name: nginx
     state: restarted
