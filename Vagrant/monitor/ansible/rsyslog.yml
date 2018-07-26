@@ -1,0 +1,10 @@
+- name: Configure rsyslog
+  copy: 
+    src: /home/marius/Yonder/Vagrant/monitor/rsyslog/rsyslog.conf
+    dest: /etc/rsyslog.conf
+
+- name: Restart rsyslog service
+  service:
+    name: rsyslog
+    state: restarted
+    

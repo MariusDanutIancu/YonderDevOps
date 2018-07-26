@@ -116,9 +116,32 @@ Vagrant.configure("2") do |config|
 			lv.password = "root"
     end
 
-	  monitor_config.vm.provision "shell", path: "monitor/scripts/monitor.sh"
-  	 monitor_config.vm.provision "shell", path: "monitor/scripts/monitor_firewalld.sh"
+    monitor_config.vm.provision "shell", path: "monitor/scripts/monitor_firewalld.sh"
+
+	  monitor_config.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '/home/marius/Yonder/Vagrant/global/scripts/ansible/install.yml'
+        ansible.host_key_checking = false
     end
+    
+    monitor_config.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '/home/marius/Yonder/Vagrant/global/users/ansible/users.yml'
+        ansible.host_key_checking = false
+    end
+
+    monitor_config.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '/home/marius/Yonder/Vagrant/monitor/ansible/configure_monitor.yml'
+        ansible.host_key_checking = false
+    end    
+
+    monitor_config.vm.provision "file", source: "monitor/nagios/centos7.cfg", destination: "/home/vagrant/files/nagios/centos7.cfg"
+    monitor_config.vm.provision "file", source: "monitor/nagios/commands.cfg", destination: "/home/vagrant/files/nagios/commands.cfg"
+
+    monitor_config.vm.provision "file", source: "monitor/snmp/snmpd.conf", destination: "/home/vagrant/files/snmp/snmpd.conf"
+
+  	monitor_config.vm.provision "shell", path: "monitor/scripts/snmp.sh"
+    monitor_config.vm.provision "shell", path: "monitor/scripts/nagios.sh"
+
+  end
 
   config.vm.define :repository do |repository_config| 
     		

@@ -6,6 +6,7 @@
   vars:
     packages:
       - vim
+      - curl
 
   tasks:
     - name: return motd to registered var

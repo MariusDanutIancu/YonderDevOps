@@ -1,0 +1,5 @@
+- name: ensure yum packages are installed
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{packages}}"

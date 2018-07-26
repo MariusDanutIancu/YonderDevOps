@@ -1,0 +1,12 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - import_tasks: /home/marius/Yonder/Vagrant/monitor/ansible/install.yml
+      vars:
+        packages:
+          - httpd
+          - rsyslog
+
+    - import_tasks: /home/marius/Yonder/Vagrant/monitor/ansible/rsyslog.yml
