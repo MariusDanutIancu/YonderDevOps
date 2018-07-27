@@ -9,7 +9,7 @@ usermod -a -G nagcmd nagios
 ######################################################################################
 # install nagios
 cd ~
-curl -L -O https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz
+curl -L -O https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.1.tar.gz
 
 tar xvf nagios-*.tar.gz
 
@@ -46,14 +46,19 @@ make install
 # configure nagios
 
 mkdir /usr/local/nagios/etc/servers
+cp /home/vagrant/files/nagios/nagios.cfg /usr/local/nagios/etc/nagios.cfg
 cp /home/vagrant/files/nagios/centos7.cfg /usr/local/nagios/etc/servers/centos7.cfg
 cp /home/vagrant/files/nagios/commands.cfg /usr/local/nagios/etc/objects/commands.cfg
 
 htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin admin
 
 #######################################################################################
-# restart
+# fix 403 error
+yum -y install php
+systemctl restart httpd.service
 
+#######################################################################################
+# restart
 systemctl daemon-reload
 systemctl enable nagios.service
 systemctl restart nagios.service

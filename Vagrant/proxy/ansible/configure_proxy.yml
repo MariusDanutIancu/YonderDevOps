@@ -12,3 +12,5 @@
     - import_tasks: /home/marius/Yonder/Vagrant/proxy/ansible/certificate.yml
     
     - import_tasks: /home/marius/Yonder/Vagrant/proxy/ansible/nginx.yml
+
+    - import_tasks: /home/marius/Yonder/Vagrant/proxy/ansible/rsyslog.yml
